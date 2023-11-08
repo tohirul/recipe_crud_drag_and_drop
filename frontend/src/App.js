@@ -8,6 +8,7 @@ import ImagePopUpModal from "./ImagePopUpModal";
 import CreateRecipeModal from "./CreateRecipeModal";
 
 function App() {
+  // State variables for managing recipes, modals, drag-and-drop functionality, and data fetching
   const [recipes, setRecipes] = useState([]);
   const [recipe, setRecipe] = useState(null);
   const [modalShow, setModalShow] = useState(false);
@@ -15,10 +16,12 @@ function App() {
   const [isDraggable, setIsDraggable] = useState(false);
   const [refetch, setRefetch] = useState(false);
 
+  // Fetch data from the server when the page loads
   window.onload = () => {
     setRefetch(true);
   };
 
+  // UseEffect to fetch recipes when refetch state changes
   useEffect(() => {
     if (refetch) {
       console.log("Started fetching...");
@@ -37,9 +40,11 @@ function App() {
     }
     setRefetch(false);
   }, [setRecipes, recipes, refetch]);
-  // console.log("Recipes :", recipes);
 
+  // Function to handle form submission for adding a new recipe
   const onSubmit = async (data) => {
+    // Code for handling form submission, image upload, and recipe creation
+    // ...
     console.log(data, "Data submission started !!!");
 
     const imageData = new FormData();
@@ -86,14 +91,18 @@ function App() {
       console.error("Error creating recipe", error);
       // Handle error
     }
+    // Set refetch to true to fetch updated data after adding a new recipe
+    setRefetch(true);
+    // Close the modal or handle success as needed
   };
 
-  // ! Save ref for drag item and drag over item;
+  // Refs for drag-and-drop functionality
   const dragItem = useRef(null);
   const dragOverItem = useRef(null);
 
-  // ! Handle Sorting
+  // Function to handle sorting of recipes using drag-and-drop
   const handleSort = () => {
+    // Code for handling drag-and-drop sorting of recipes
     console.log("Handle sorting!!!");
     // * Copy Array
     let dupRecipe = [...recipes];
@@ -112,8 +121,9 @@ function App() {
     handleSaveChanges(dupRecipe);
   };
 
+  // Function to save changes after sorting recipes
   const handleSaveChanges = (dupRecipe) => {
-    // Send a PATCH request to update the recipes in the database
+    // Code for saving sorted recipes to the server
     const url = "http://localhost:4000/update-recipes";
     setRecipes(dupRecipe);
     axios
@@ -131,7 +141,9 @@ function App() {
       .catch((err) => console.error(err));
   };
 
+  // Function to handle removing a recipe
   const handleRemove = async (id) => {
+    // Code for handling recipe removal
     console.log("Removing by :", id);
     const url = `http://localhost:4000/recipes/${id}`;
     let res;
@@ -149,6 +161,8 @@ function App() {
     setRefetch(true);
     console.log(res);
   };
+
+  // Array representing table header columns
   const arrTHead = [
     "#",
     "Recipe Name",
@@ -158,6 +172,8 @@ function App() {
     "Remove",
     "Action",
   ];
+
+  // JSX for rendering the component
   return (
     <div className="App">
       <h1>Recipe Data</h1>

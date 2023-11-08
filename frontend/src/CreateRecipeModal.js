@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 export default function CreateRecipeModal({ fn, ...props }) {
   const { register, handleSubmit, reset } = useForm();
   const onSubmit = (data) => {
+    console.log("From create Popup modal");
     // Call the onSubmit prop function passed from the parent component
     fn(data);
 
